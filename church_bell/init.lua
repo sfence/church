@@ -56,7 +56,7 @@ church_bell.ring_church_bell_once = function()
    for i,v in ipairs( church_bell_positions ) do
 -- print('Ringing bell at '..tostring( minetest.pos_to_string( v )));
       minetest.sound_play( 'church_bell',
-        { pos = v, gain = 1.5, max_hear_distance = 300,});
+        { pos = v, gain = 2.5, max_hear_distance = 300,});
    end
 end
 
@@ -64,36 +64,56 @@ end
 
 church_bell.ring_church_bell = function()
 
-   -- figure out if this is the right time to ring
-   local sekunde = tonumber( os.date( '%S'));
-   local minute  = tonumber( os.date( '%M'));
-   local stunde  = tonumber( os.date( '%I')); -- in 12h-format (a bell that rings 24x at once would not survive long...)
-   local delay   = church_bell.RING_INTERVAL;
+    -- figure out if this is the right time to ring
+    --[[local sekunde = tonumber( os.date( '%S'));
+    local minute  = tonumber( os.date( '%M'));
+    local stunde  = tonumber( os.date( '%I')); -- in 12h-format (a bell that rings 24x at once would not survive long...)
+    local delay   = church_bell.RING_INTERVAL;
+    minetest.chat_send_all('stunde: '.. stunde .. ' - minute: ' .. minute .. ' - sekunde: ' .. sekunde)]]--
 
    --print('[church_bells]It is now H:'..tostring( stunde )..' M:'..tostring(minute)..' S:'..tostring( sekunde ));
 
    --local datum = os.date( 'Stunde:%l Minute:%M Sekunde:%S');
    --print('[church_bells] ringing bells at '..tostring( datum ))
 
-   delay = church_bell.RING_INTERVAL - sekunde - (minute*60);
+    -- lets do it using the world clock
+    local time = minetest:get_timeofday() * 24
+    local stunde, minutes = math.modf( time )
+    if stunde > 12 then stunde = stunde - 12 end
+    if stunde == 0 then stunde = 12 end
+    minutes = math.floor(minutes * 100)
+    minutes = (minutes * 60) / 100
+    local minute, sekundes = math.modf( minutes )
+    sekunde = (sekundes*60)
+    local delay   = church_bell.RING_INTERVAL;
+    --minetest.chat_send_all('stunde: '.. stunde .. ' - minute: ' .. minute .. ' - sekunde: ' .. sekunde)
+
+   --delay = church_bell.RING_INTERVAL - sekunde - (minute*60);
 
    -- make sure the bell rings the next hour
-   minetest.after( delay, church_bell.ring_church_bell );
+   --minetest.after( delay, church_bell.ring_church_bell );
 
    -- if no bells are around then don't ring
    if( church_bell_positions == nil or #church_bell_positions < 1 ) then
       return;
    end
 
-   if( sekunde > 10 ) then
+   --[[if( sekunde > 10 ) then
 --      print('[church_bells] Too late. Waiting for '..tostring( delay )..' seconds.');
       return;
-   end
+   end]]--
 
-   -- ring the bell for each hour once
-   for i=1,stunde do
-     minetest.after( (i-1)*5,  church_bell.ring_church_bell_once );
-   end
+    local delay = 10
+    if minute == 0 and sekunde >= 0 and sekunde < 60 then
+        -- ring the bell for each hour once
+        for i=1,stunde do
+            minetest.after( (i-1)*5,  church_bell.ring_church_bell_once );
+        end
+        delay = 60
+        minetest.after( delay, church_bell.ring_church_bell );
+    else
+        minetest.after( delay, church_bell.ring_church_bell );
+    end
 
 end
 
