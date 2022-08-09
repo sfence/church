@@ -103,10 +103,11 @@ minetest.register_node("church_candles:hive_wild", {
 --Artificial Hive
 minetest.register_node("church_candles:hive", {
 	description = "Artificial Hive",
-    tiles = {"church_candles_hive_top.png","church_candles_hive_bottom.png",
-    "church_candles_hive.png","church_candles_hive.png",
-    "church_candles_hive.png","church_candles_hive.png"},
-    drawtype = "nodebox",
+	tiles = {"church_candles_hive_top.png","church_candles_hive_bottom.png",
+		"church_candles_hive.png","church_candles_hive.png",
+		"church_candles_hive.png","church_candles_hive.png"},
+	drawtype = "nodebox",
+	use_texture_alpha = "clip",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	place_param2 = 0,
@@ -157,10 +158,11 @@ minetest.register_node("church_candles:hive", {
 
 minetest.register_node("church_candles:hive_empty", {
 	description = "Artificial Hive (empty)",
-    tiles = {"church_candles_hive_empty_top.png","church_candles_hive_empty_bottom.png",
-    "church_candles_hive_empty.png","church_candles_hive_empty.png",
-    "church_candles_hive_empty.png","church_candles_hive_empty.png"},
-    drawtype = "nodebox",
+	tiles = {"church_candles_hive_empty_top.png","church_candles_hive_empty_bottom.png",
+		"church_candles_hive_empty.png","church_candles_hive_empty.png",
+		"church_candles_hive_empty.png","church_candles_hive_empty.png"},
+	drawtype = "nodebox",
+	use_texture_alpha = "clip",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	place_param2 = 0,
