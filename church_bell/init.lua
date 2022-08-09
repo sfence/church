@@ -14,7 +14,7 @@ local church_bell_positions = {};
 
 church_bell.save_church_bell_positions = function( player )
 
-   str = minetest.serialize( ({ church_bell_data = church_bell_positions}) );
+   local str = minetest.serialize( ({ church_bell_data = church_bell_positions}) );
 
    local file, err = io.open( church_bell.church_bell_SAVE_FILE, 'wb');
    if (err ~= nil) then
@@ -84,7 +84,7 @@ church_bell.ring_church_bell = function()
     minutes = math.floor(minutes * 100)
     minutes = (minutes * 60) / 100
     local minute, sekundes = math.modf( minutes )
-    sekunde = (sekundes*60)
+    local sekunde = (sekundes*60)
     local delay   = church_bell.RING_INTERVAL;
     --minetest.chat_send_all('stunde: '.. stunde .. ' - minute: ' .. minute .. ' - sekunde: ' .. sekunde)
 

@@ -157,7 +157,7 @@ church_candles.light1 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if wield and wield == "default:torch" then
 		local litname = church_candles.find_lit(node.name)
-		minetest.env:add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
 	local n1 = minetest.get_node(p1)
 	if n1.name == "air" then
@@ -177,7 +177,7 @@ church_candles.light2 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if wield and wield == "default:torch" then
 		local litname = church_candles.find_lit(node.name)
-		minetest.env:add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 		end
 	end
 
@@ -192,7 +192,7 @@ church_candles.light3 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if wield and wield == "default:torch" then
 		local litname = church_candles.find_lit(node.name)
-		minetest.env:add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
 	local n1 = minetest.get_node(p1)
 	if n1.name == "air" then
@@ -212,7 +212,7 @@ church_candles.light3 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if not wield or wield ~= "default:torch" then
 		local unlitname = church_candles.find_unlit(node.name)
-		minetest.env:add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
 	local n1 = minetest.get_node(p1)
@@ -233,7 +233,7 @@ church_candles.light3 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if not wield or wield ~= "default:torch" then
 		local unlitname = church_candles.find_unlit(node.name)
-		minetest.env:add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 		end
 		end
 
@@ -248,7 +248,7 @@ church_candles.light3 = function(pos, node, puncher)
 	wield = wield:get_name()
 	if not wield or wield ~= "default:torch" then
 		local unlitname = church_candles.find_unlit(node.name)
-		minetest.env:add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
+		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
 	local n1 = minetest.get_node(p1)
@@ -262,6 +262,7 @@ church_candles.create_wall = function(ctype)
 	minetest.register_node(ctype.unlit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image..".png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -308,7 +309,7 @@ church_candles.create_wall = function(ctype)
 				if fdir < 0 then
 					fdir = 3
 				end
-				minetest.env:add_node(above, {name = itemstack:get_name(), param2 = fdir})
+				minetest.add_node(above, {name = itemstack:get_name(), param2 = fdir})
 				itemstack:take_item()
 				return itemstack
 			end
@@ -318,6 +319,7 @@ church_candles.create_wall = function(ctype)
 	minetest.register_node(ctype.lit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image.."_lit.png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -365,6 +367,7 @@ church_candles.create_floor= function(ctype)
 	minetest.register_node(ctype.unlit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image..".png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -404,7 +407,7 @@ church_candles.create_floor= function(ctype)
 			local fdir = minetest.dir_to_facedir(dir)
 
 			if wdir == 1 then
-				minetest.env:add_node(above, {name = itemstack:get_name(), param2 = fdir})
+				minetest.add_node(above, {name = itemstack:get_name(), param2 = fdir})
 				itemstack:take_item()
 			end
 			return itemstack
@@ -414,6 +417,7 @@ church_candles.create_floor= function(ctype)
 	minetest.register_node(ctype.lit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image.."_lit.png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -460,6 +464,7 @@ church_candles.create_candelabra = function(ctype)
 	minetest.register_node(ctype.unlit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image..".png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -507,7 +512,7 @@ church_candles.create_candelabra = function(ctype)
 			local fdir = minetest.dir_to_facedir(dir)
 
 			if wdir == 1 then
-				minetest.env:add_node(above, {name = itemstack:get_name(), param2 = fdir})
+				minetest.add_node(above, {name = itemstack:get_name(), param2 = fdir})
 				itemstack:take_item()
 			end
 			return itemstack
@@ -517,6 +522,7 @@ church_candles.create_candelabra = function(ctype)
 	minetest.register_node(ctype.lit, {
 		description = ctype.name,
 		tiles = {ctype.image.."_top.png",ctype.image.."_bottom.png",ctype.image.."_lit.png"},
+		use_texture_alpha = "clip",
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -590,7 +596,7 @@ minetest.register_node("church_candles:candle", {
 		local wdir = minetest.dir_to_wallmounted(dir)
 
 		if wdir == 1 then
-			minetest.env:add_node(above, {name = "church_candles:candle"})
+			minetest.add_node(above, {name = "church_candles:candle"})
 			itemstack:take_item()
 		end
 		return itemstack

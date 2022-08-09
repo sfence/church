@@ -119,12 +119,12 @@ local function place_entities(pos)
 				objrefs[entity_name] = minetest.add_entity(pos, entity_name)
 			end
 
-			objrefs[entity_name]:setpos({
+			objrefs[entity_name]:set_pos({
 				x = pos.x - values.dx * depth + values.rx * right,
 				y = pos.y + height,
 				z = pos.z - values.dz * depth + values.rz * right})
 
-			objrefs[entity_name]:setyaw(values.yaw)
+			objrefs[entity_name]:set_yaw(values.yaw)
 		end
 	end
 	return objrefs
@@ -151,7 +151,7 @@ end
 --- of corresponding node for each entity.
 function display_lib.on_activate(entity, staticdata)
 	if entity then
-		call_node_on_display_update(entity.object:getpos(), entity.object)
+		call_node_on_display_update(entity.object:get_pos(), entity.object)
 	end
 end
 
