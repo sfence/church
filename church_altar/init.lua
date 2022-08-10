@@ -7,19 +7,38 @@ church_altar = {}
 -- Formspec
 --------------------
 local altar_formspec =
-	"size[8,5.25]"..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	"list[current_name;main;0,0;8,1;]"..
-	"list[current_player;main;0,1.5;8,4;]"..
+	"size[10,5.25]"..
+	"list[current_name;main;0,0;10,1;]"..
+	"list[current_player;main;0,1.5;10,4;]"..
 	"listring[current_name;main]" ..
 	"listring[current_player;main]"
-	default.get_hotbar_bg(0,4.85)
+
+if minetest.get_modpath("default") then
+	altar_formspec =
+		"size[8,5.25]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"list[current_name;main;0,0;8,1;]"..
+		"list[current_player;main;0,1.5;8,4;]"..
+		"listring[current_name;main]" ..
+		"listring[current_player;main]"..
+		default.get_hotbar_bg(0,4.85)
+end
 
 --------------------
 -- Register Nodes
 --------------------
+
+local stone_sounds = nil
+if minetest.get_modpath("sounds") then
+	stone_sounds = sounds.node_stone()
+elseif minetest.get_modpath("default") then
+	stone_sounds = default.node_sound_stone_defaults()
+elseif minetest.get_modpath("hades_sounds") then
+	stone_sounds = hades_sounds.node_sound_stone_defaults()
+end
+
 minetest.register_node("church_altar:altar_end_stone", {
 	description = "Stone Alter End",
 	tiles = {"church_altar_stone_end_top.png",
@@ -36,7 +55,7 @@ minetest.register_node("church_altar:altar_end_stone", {
 	is_ground_content = false,
 	groups = {cracky = 3},
 	on_rotate = screwdriver.rotate_simple,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	node_box = {
 		type = 'fixed',
 		fixed = {
@@ -72,7 +91,7 @@ minetest.register_node("church_altar:altar_end_marble", {
 	is_ground_content = false,
 	groups = {cracky = 3},
 	on_rotate = screwdriver.rotate_simple,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	node_box = {
 		type = 'fixed',
 		fixed = {
@@ -107,7 +126,7 @@ minetest.register_node("church_altar:altar_middle_stone", {
 	is_ground_content = false,
 	groups = {cracky = 3},
 	on_rotate = screwdriver.rotate_simple,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	node_box = {
 		type = 'fixed',
 		fixed = {
@@ -175,7 +194,7 @@ minetest.register_node("church_altar:altar_middle_marble", {
 	is_ground_content = false,
 	groups = {cracky = 3},
 	on_rotate = screwdriver.rotate_simple,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	node_box = {
 		type = 'fixed',
 		fixed = {
@@ -259,56 +278,80 @@ minetest.register_abm({
 -----------------------------
 -- Register Craft Recipes
 -----------------------------
+local items = {
+		stone = "default:stone",
+		stone_slab = "stairs:slab_stone",
+		marble = "default:coral_skeleton",
+		marble_slab = "default:coral_skeleton",
+	}
+
+if minetest.get_modpath("technic_worldgen") then
+	items.marble = "technic:marble"
+	items.marble_slab = "stairs:slab_technic_marble"
+end
+
+if minetest.get_modpath("darkage") then
+	items.marble = "darkage:marble"
+	items.marble_slab = "stairs:slab_darkage_marble"
+end
+
+if minetest.get_modpath("hades_core") then
+	items.stone = "hades_core:stone"
+	items.stone_slab = "hades_stairs:slab_stone"
+	items.marble = "hades_core:marble"
+	items.marble_slab = "hades_stairs:slab_marble"
+end
+
 minetest.register_craft({
 	output = 'church_altar:altar_end_stone 2',
 	recipe = {
-		{'group:stone', 'group:stone', ''},
-		{'group:stone', '', ''},
-		{'group:stone', 'group:stone', ''}
+		{items.stone, items.stone, ''},
+		{items.stone, '', ''},
+		{items.stone, items.stone, ''}
 	}
 })
 
 minetest.register_craft({
 	output = 'church_altar:altar_end_stone 2',
 	recipe = {
-		{'', 'group:stone', 'group:stone'},
-		{'', '', 'group:stone'},
-		{'', 'group:stone', 'group:stone'}
+		{'', items.stone, items.stone},
+		{'', '', items.stone},
+		{'', items.stone, items.stone}
 	}
 })
 
 minetest.register_craft({
 	output = 'church_altar:altar_middle_stone',
 	recipe = {
-		{'', 'stairs:slab_stone', ''},
-		{'', 'group:stone', ''},
-		{'', 'stairs:slab_stone', ''}
+		{'', items.stone_slab, ''},
+		{'', items.stone, ''},
+		{'', items.stone_slab, ''}
 	}
 })
 
 minetest.register_craft({
 	output = 'church_altar:altar_end_marble 2',
 	recipe = {
-		{'default:coral_skeleton', 'default:coral_skeleton', ''},
-		{'default:coral_skeleton', '', ''},
-		{'default:coral_skeleton', 'default:coral_skeleton', ''}
+		{items.marble, items.marble, ''},
+		{items.marble, '', ''},
+		{items.marble, items.marble, ''}
 	}
 })
 
 minetest.register_craft({
 	output = 'church_altar:altar_end_marble 2',
 	recipe = {
-		{'', 'default:coral_skeleton', 'default:coral_skeleton'},
-		{'', '', 'default:coral_skeleton'},
-		{'', 'default:coral_skeleton', 'default:coral_skeleton'}
+		{'', items.marble, items.marble},
+		{'', '', items.marble},
+		{'', items.marble, items.marble}
 	}
 })
 
 minetest.register_craft({
 	output = 'church_altar:altar_middle_marble',
 	recipe = {
-		{'default:coral_skeleton'},
-		{'default:coral_skeleton'},
-		{'default:coral_skeleton'}
+		{items.marble_slab},
+		{items.marble},
+		{items.marble_slab}
 	}
 })

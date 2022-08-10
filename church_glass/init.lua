@@ -1,6 +1,16 @@
 --------------------
 -- Register Nodes
 --------------------
+
+local glass_sounds = nil
+if minetest.get_modpath("sounds") then
+	glass_sounds = sounds.node_glass()
+elseif minetest.get_modpath("default") then
+	glass_sounds = default.node_sound_glass_defaults()
+elseif minetest.get_modpath("hades_sounds") then
+	glass_sounds = hades_sounds.node_sound_glass_defaults()
+end
+
 for _, c in pairs({"blue", "green", "red", "violet"}) do
 	minetest.register_node("church_glass:church_glass_"..c, {
 		description = c.." Stained Glass",
@@ -22,7 +32,7 @@ for _, c in pairs({"blue", "green", "red", "violet"}) do
 		is_ground_content = false,
 		light_source = 5,
 		groups = {snappy=3,choppy=3,cracky=3,crumbly=3, oddly_breakable_by_hand=3},
-		sounds = default.node_sound_glass_defaults(),
+		sounds = glass_sounds,
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -57,7 +67,7 @@ for _, c in pairs({"blue", "green", "red", "violet"}) do
 		is_ground_content = false,
 		light_source = 5,
 		groups = {snappy=3,choppy=3,cracky=3,crumbly=3, oddly_breakable_by_hand=3},
-		sounds = default.node_sound_glass_defaults(),
+		sounds = glass_sounds,
 		node_box = {
 			type = "fixed",
 			fixed = {

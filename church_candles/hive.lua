@@ -64,6 +64,44 @@ end
 --------------------
 -- Nodes
 --------------------
+
+local add_bee = function(pos, rand)
+	end
+if minetest.get_modpath("mobs_animal") then
+	add_bee = function(pos, rand)
+			if math.random(1, rand) == 1 then
+				minetest.add_entity(pos, "mobs_animal:bee")
+			end
+		end
+elseif minetest.get_modpath("hades_animals") then
+	add_bee = function(pos, rand)
+			if math.random(1, rand) == 1 then
+				minetest.add_entity(pos, "hades_animals:bee")
+			end
+		end
+end
+
+local leaves_sounds = nil
+local wood_sounds = nil
+local dirt_sounds = nil
+local glass_sounds = nil
+if minetest.get_modpath("sounds") then
+	leaves_sounds = sounds.node_leaves()
+	wood_sounds = sounds.node_wood()
+	dirt_sounds = sounds.node_dirt()
+	glass_sounds = sounds.node_glass()
+elseif minetest.get_modpath("default") then
+	leaves_sounds = default.node_sound_leaves_defaults()
+	wood_sounds = default.node_sound_wood_defaults()
+	dirt_sounds = default.node_sound_dirt_defaults()
+	glass_sounds = default.node_sound_glass_defaults()
+elseif minetest.get_modpath("hades_sounds") then
+	leaves_sounds = hades_sounds.node_sound_leaves_defaults()
+	wood_sounds = hades_sounds.node_sound_wood_defaults()
+	dirt_sounds = hades_sounds.node_sound_dirt_defaults()
+	glass_sounds = hades_sounds.node_sound_glass_defaults()
+end
+
 --Natural Beehive
 minetest.register_node("church_candles:hive_wild", {
 	description = "Beehive",
@@ -75,7 +113,7 @@ minetest.register_node("church_candles:hive_wild", {
 	sunlight_propagates = true,
 	walkable = true,
 	groups = {snappy = 3, oddly_breakable_by_hand = 2, flammable = 1, not_in_creative_inventory = 1},
-    sounds = default.node_sound_leaves_defaults(),
+	sounds = leaves_sounds,
 	drop = {
 		max_items = 1,
 		items = {
@@ -84,12 +122,7 @@ minetest.register_node("church_candles:hive_wild", {
 		}
 	},
     after_place_node = function(pos, placer, itemstack)
-    if minetest.get_modpath( "mobs") then
-         if math.random(1, 6) == 1 then
-          minetest.add_entity(pos, "mobs_animal:bee")
-        end
-    else
-   end
+			add_bee(pos, 6)
 	end,
 	on_punch = function(_, _, puncher, _)
 		local health = puncher:get_hp()
@@ -113,7 +146,7 @@ minetest.register_node("church_candles:hive", {
 	place_param2 = 0,
 	on_rotate = screwdriver.rotate_simple,
 	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 3, not_in_creative_inventory = 1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = wood_sounds,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -131,12 +164,7 @@ minetest.register_node("church_candles:hive", {
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	},
     after_place_node = function(pos, placer, itemstack)
-    if minetest.get_modpath( "mobs") then
-         if math.random(1, 12) == 1 then
-          minetest.add_entity(pos, "mobs_animal:bee")
-        end
-    else
-   end
+			add_bee(pos, 12)
 	end,
 	on_construct = hive.construct,
 	on_timer = hive.timer,
@@ -168,7 +196,7 @@ minetest.register_node("church_candles:hive_empty", {
 	place_param2 = 0,
 	on_rotate = screwdriver.rotate_simple,
 	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 3},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = wood_sounds,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -186,12 +214,7 @@ minetest.register_node("church_candles:hive_empty", {
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	},
     after_place_node = function(pos, placer, itemstack)
-    if minetest.get_modpath( "mobs") then
-         if math.random(1, 18) == 1 then
-          minetest.add_entity(pos, "mobs_animal:bee")
-        end
-    else
-   end
+			add_bee(pos, 18)
 	end,
 	on_timer = function(pos,elapsed)
 		minetest.add_node(pos,{name="church_candles:hive"})
@@ -246,7 +269,7 @@ minetest.register_node("church_candles:honeycomb_block", {
 	inventory_image = "church_candles_honey_comb_block.png",
 	tiles = {"church_candles_honey_comb_block.png"},
 	groups = {oddly_breakable_by_hand = 3, dig_immediate = 1},
-	sounds = default.node_sound_dirt_defaults(),
+	sounds = dirt_sounds,
 })
 --Jar of Honey
 minetest.register_node("church_candles:honey_jar", {
@@ -276,7 +299,7 @@ minetest.register_node("church_candles:honey_jar", {
 		},
 	},
 	groups = {vessel = 1, dig_immediate = 3, attached_node = 1},
-	sounds = default.node_sound_glass_defaults(),
+	sounds = glass_sounds,
 	on_use = minetest.item_eat(10),
 })
 --Bottle of Honey
@@ -294,7 +317,7 @@ minetest.register_node("church_candles:honey_bottled", {
 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
 	},
 	groups = {vessel = 1, dig_immediate = 3, attached_node = 1},
-	sounds = default.node_sound_glass_defaults(),
+	sounds = glass_sounds,
 	on_use = minetest.item_eat(6, "vessels:glass_bottle"),
 })
 ------------
@@ -391,12 +414,24 @@ minetest.register_craftitem("church_candles:comb", {
 ------------------
 -- Craft Recipes
 ------------------
+local items = {
+		glass = "default:glass",
+		wood = "default:wood",
+		glass_bottle = "vessels:glass_bottle",
+	}
+
+if minetest.get_modpath("hades_core") then
+	items.glass = "hades_core:glass"
+	items.wood = "hades_trees:wood"
+	items.glass_bottle = "hades_vessels:glass_bottle"
+end
+
 minetest.register_craft({
 	output = "church_candles:hive_empty",
 	recipe = {
 		{"group:stick", "group:stick", "group:stick"},
-		{"group:stick", "default:glass", "group:stick"},
-		{"default:wood","default:wood","default:wood"},
+		{"group:stick",  items.glass , "group:stick"},
+		{items.wood ,    items.wood  ,  items.wood},
 	}
 })
 
@@ -418,7 +453,7 @@ minetest.register_craft({
 	recipe = {
 		{"church_candles:honey", "church_candles:honey"},
 		{"church_candles:comb", "church_candles:comb"},
-		{"vessels:glass_bottle", "vessels:glass_bottle"},
+		{items.glass_bottle, items.glass_bottle},
 	}
 })
 
@@ -427,7 +462,7 @@ minetest.register_craft({
 	recipe = {
         {"church_candles:honey"},
 		{"church_candles:honey"},
-		{"vessels:glass_bottle"},
+		{items.glass_bottle},
 	}
 })
 

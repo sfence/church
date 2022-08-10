@@ -5,6 +5,15 @@ grave = {}
 
 display_lib.register_display_entity("church_grave:text")
 
+local stone_sounds = nil
+if minetest.get_modpath("sounds") then
+	stone_sounds = sounds.node_stone()
+elseif minetest.get_modpath("default") then
+	stone_sounds = default.node_sound_stone_defaults()
+elseif minetest.get_modpath("hades_sounds") then
+	stone_sounds = hades_sounds.node_sound_stone_defaults()
+end
+
 --Grave Markers
 minetest.register_node('church_grave:grave', {
 	description = 'Grave Stone',
@@ -19,7 +28,7 @@ minetest.register_node('church_grave:grave', {
 	is_ground_content = false,
 	buildable_to = false,
 	--light_source = 1,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	node_box = {
 		type = 'fixed',
 		fixed = {
@@ -30,12 +39,13 @@ minetest.register_node('church_grave:grave', {
 			{-0.125, 0.375, -0.125, 0.125, 0.4375, 0.125},
 		}
 	},
+	--[[
 	selection_box = {
 		type = 'fixed',
 		fixed = {
 			{-0.5, -0.5, -0.5, 0.5, -0.4375, 0.5},
 		}
-	},
+	},--]]
 	display_entities = {
 		["church_grave:text"] = {
 			on_display_update = font_lib.on_display_update,
@@ -80,7 +90,7 @@ minetest.register_node('church_grave:grave_fancy', {
 	is_ground_content = false,
 	buildable_to = false,
 	--light_source = 1,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	on_rotate = screwdriver.rotate_simple,
 	node_box = {
 		type = 'fixed',
@@ -91,12 +101,13 @@ minetest.register_node('church_grave:grave_fancy', {
 			{-0.3125, -0.5, -0.3125, 0.3125, -0.375, 0.3125},
 		}
 	},
+	--[[
 	selection_box = {
 		type = 'fixed',
 		fixed = {
 			{-0.5, -0.5, -0.5, 0.5, -0.4375, 0.5},
 		}
-	}
+	}--]]
 })
 
 minetest.register_node('church_grave:grave_simple', {
@@ -112,7 +123,7 @@ minetest.register_node('church_grave:grave_simple', {
 	is_ground_content = false,
 	buildable_to = false,
 	--light_source = 1,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = stone_sounds,
 	on_rotate = screwdriver.rotate_simple,
 	node_box = {
 		type = 'fixed',
@@ -123,40 +134,51 @@ minetest.register_node('church_grave:grave_simple', {
 			{-0.1875, -0.5, -0.1875, 0.1875, -0.4375, 0.1875},
 		}
 	},
+	--[[
 	selection_box = {
 		type = 'fixed',
 		fixed = {
 			{-0.5, -0.5, -0.5, 0.5, -0.4375, 0.5},
 		}
-	}
+	}--]]
 })
 
 -----------
 --Crafting
 -----------
+local items = {
+		stone = "default:stone",
+		stone_slab = "stairs:slab_stone",
+		stone_wall = "walls:stone",
+	}
+
+if minetest.get_modpath("hades_core") then
+	items.stone = "hades_core:stone"
+	items.stone_slab = "hades_stairs:slab_stone"
+	items.stone_wall = "hades_walls:stone"
+end
+
 minetest.register_craft({
 	output = 'church_grave:grave',
 	recipe = {
-		{ '', '', '' },
-		{ '', 'group:stone', '' },
-		{ '', 'stairs:slab_cobble', '' },
+		{ items.stone},
+		{ items.stone_slab},
 	}
 })
 
 minetest.register_craft({
 	output = 'church_grave:grave_fancy',
 	recipe = {
-		{ '', 'church_cross:stone', '' },
-		{ '', 'stairs:slab_cobble', '' },
-		{ '', '', '' },
+		{ 'church_cross:stone'},
+		{ items.stone_slab},
 	}
 })
 
 minetest.register_craft({
 	output = 'church_grave:grave_simple',
 	recipe = {
-		{ '', 'church_cross:stone', '' },
-		{ '', 'walls:cobble', '' },
-		{ '', '', '' },
+		{ 'church_cross:stone'},
+		{ items.stone_wall},
 	}
 })
+

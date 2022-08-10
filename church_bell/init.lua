@@ -18,10 +18,10 @@ church_bell.save_church_bell_positions = function( player )
 
    local file, err = io.open( church_bell.church_bell_SAVE_FILE, 'wb');
    if (err ~= nil) then
-      if( player ) then
-         minetest.chat_send_player(player:get_player_name(), 'Error: Could not save bell data');
-      end
-      return
+	  if( player ) then
+		 minetest.chat_send_player(player:get_player_name(), 'Error: Could not save bell data');
+	  end
+	  return
    end
    file:write( str );
    file:flush();
@@ -36,16 +36,16 @@ church_bell.restore_church_bell_data = function()
 
    local file, err = io.open(church_bell.church_bell_SAVE_FILE, 'rb');
    if (err ~= nil) then
-      print('Error: Could not open bell data savefile (ignore this message on first start)');
-      return
+	  print('Error: Could not open bell data savefile (ignore this message on first start)');
+	  return
    end
    local str = file:read();
    file:close();
 
    local church_bell_positions_table = minetest.deserialize( str );
    if( church_bell_positions_table and church_bell_positions_table.church_bell_data ) then
-     church_bell_positions = church_bell_positions_table.church_bell_data;
-     print('[church_bell] Read positions of bells from savefile.');
+	 church_bell_positions = church_bell_positions_table.church_bell_data;
+	 print('[church_bell] Read positions of bells from savefile.');
    end
 end
 
@@ -229,19 +229,33 @@ drawtype = 'mesh',
 	groups = {cracky=2},
 })
 
+-----------------------------
+-- Register Craft Recipes
+-----------------------------
+local items = {
+		gold_ingot = "default:gold_ingot",
+		iron_ingot = "default:steel_ingot",
+	}
+
+if minetest.get_modpath("hades_core") then
+	items.gold_ingot = "hades_core:gold_ingot"
+	items.iron_ingot = "hades_core:steel_ingot"
+end
+
 minetest.register_craft({
 	output = 'church_bell:gold',
 	recipe = {
-		{'', 'default:gold_ingot', ''},
-		{'default:gold_ingot', '', 'default:gold_ingot'},
-		{'default:gold_ingot', '', 'default:gold_ingot'},
+		{'', items.gold_ingot, ''},
+		{items.gold_ingot, '', items.gold_ingot},
+		{items.gold_ingot, '', items.gold_ingot},
 	},
 })
 minetest.register_craft({
 	output = 'church_bell:iron',
 	recipe = {
-		{'', 'default:iron_ingot', ''},
-		{'default:iron_ingot', '', 'default:iron_ingot'},
-		{'default:iron_ingot', '', 'default:iron_ingot'},
+		{'', items.iron_ingot, ''},
+		{items.iron_ingot, '', items.iron_ingot},
+		{items.iron_ingot, '', items.iron_ingot},
 	},
 })
+

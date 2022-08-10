@@ -13,6 +13,26 @@ screwdriver = screwdriver or {}
 
 local church_candles = {}
 
+local items = {
+		steel_ingot = "default:steel_ingot",
+		copper_ingot = "default:copper_ingot",
+		silver_ingot = "moreores:silver_ingot",
+		gold_ingot = "default:gold_ingot",
+		bronze_ingot = "default:bronze_ingot",
+		jungle_leaves = "default:jungleleaves",
+		cotton = "farming:cotton",
+	}
+
+if minetest.get_modpath("hades_core") then
+	items.steel_ingot = "hades_core:steel_ingot"
+	items.copper_ingot = "hades_core:copper_ingot"
+	items.silver_ingot = "hades_extraores:silver_ingot"
+	items.gold_ingot = "hades_core:gold_ingot"
+	items.bronze_ingot = "hades_core:bronze_ingot"
+	items.jungle_leaves = "hades_trees:jungleleaves"
+	items.cotton = "hades_farming:cotton"
+end
+
 church_candles.types = {
 	{
 		unlit = "church_candles:candle",
@@ -25,105 +45,105 @@ church_candles.types = {
 		unlit = "church_candles:candle_floor_steel",
 		lit = "church_candles:candle_floor_steel_lit",
 		name = "Steel Candle Stick",
-		ingot = "default:steel_ingot",
+		ingot = items.steel_ingot,
 		image = "church_candles_candle_steel"
 	},
 	{
 		unlit = "church_candles:candle_floor_copper",
 		lit = "church_candles:candle_floor_copper_lit",
 		name = "Copper Candle Stick",
-		ingot = "default:copper_ingot",
+		ingot = items.copper_ingot,
 		image = "church_candles_candle_copper"
 	},
 	{
 		unlit = "church_candles:candle_floor_silver",
 		lit = "church_candles:candle_floor_silver_lit",
 		name = "Silver Candle Stick",
-		ingot = "moreores:silver_ingot",
+		ingot = items.silver_ingot,
 		image = "church_candles_candle_silver"
 	},
 	{
 		unlit = "church_candles:candle_floor_gold",
 		lit = "church_candles:candle_floor_gold_lit",
 		name = "Gold Candle Stick",
-		ingot = "default:gold_ingot",
+		ingot = items.gold_ingot,
 		image = "church_candles_candle_gold"
 	},
 	{
 		unlit = "church_candles:candle_floor_bronze",
 		lit = "church_candles:candle_floor_bronze_lit",
 		name = "Bronze Candle Stick",
-		ingot = "default:bronze_ingot",
+		ingot = items.bronze_ingot,
 		image = "church_candles_candle_bronze"
 	},
 	{
 		unlit = "church_candles:candle_wall_steel",
 		lit = "church_candles:candle_wall_steel_lit",
 		name = "Steel Wall-Mount Candle",
-		ingot = "default:steel_ingot",
+		ingot = items.steel_ingot,
 		image = "church_candles_candle_steel"
 	},
 	{
 		unlit = "church_candles:candle_wall_copper",
 		lit = "church_candles:candle_wall_copper_lit",
 		name = "Copper Wall-Mount Candle",
-		ingot = "default:copper_ingot",
+		ingot = items.copper_ingot,
 		image = "church_candles_candle_copper"
 	},
 	{
 		unlit = "church_candles:candle_wall_silver",
 		lit = "church_candles:candle_wall_silver_lit",
 		name = "Silver Wall-Mount Candle",
-		ingot = "moreores:silver_ingot",
+		ingot = items.silver_ingot,
 		image = "church_candles_candle_silver"
 	},
 	{
 		unlit = "church_candles:candle_wall_gold",
 		lit = "church_candles:candle_wall_gold_lit",
 		name = "Gold Wall-Mount Candle",
-		ingot = "default:gold_ingot",
+		ingot = items.gold_ingot,
 		image = "church_candles_candle_gold"
 	},
 	{
 		unlit = "church_candles:candle_wall_bronze",
 		lit = "church_candles:candle_wall_bronze_lit",
 		name = "Bronze Wall-Mount Candle",
-		ingot = "default:bronze_ingot",
+		ingot = items.bronze_ingot,
 		image = "church_candles_candle_bronze"
 	},
 	{
 		unlit = "church_candles:candelabra_steel",
 		lit = "church_candles:candelabra_steel_lit",
 		name = "Steel Candelebra",
-		ingot = "default:steel_ingot",
+		ingot = items.steel_ingot,
 		image = "church_candles_candelabra_steel"
 	},
 	{
 		unlit = "church_candles:candelabra_copper",
 		lit = "church_candles:candelabra_copper_lit",
 		name = "Copper Candelebra",
-		ingot = "default:copper_ingot",
+		ingot = items.copper_ingot,
 		image = "church_candles_candelabra_copper"
 	},
 	{
 		unlit = "church_candles:candelabra_silver",
 		lit = "church_candles:candelabra_silver_lit",
 		name = "Silver Candelebra",
-		ingot = "moreores:silver_ingot",
+		ingot = items.silver_ingot,
 		image = "church_candles_candelabra_silver"
 	},
 	{
 		unlit = "church_candles:candelabra_gold",
 		lit = "church_candles:candelabra_gold_lit",
 		name = "Gold Candelebra",
-		ingot = "default:gold_ingot",
+		ingot = items.gold_ingot,
 		image = "church_candles_candelabra_gold"
 	},
 	{
 		unlit = "church_candles:candelabra_bronze",
 		lit = "church_candles:candelabra_bronze_lit",
 		name = "Bronze Candelebra",
-		ingot = "default:bronze_ingot",
+		ingot = items.bronze_ingot,
 		image = "church_candles_candelabra_bronze"
 	},
 }
@@ -258,6 +278,24 @@ church_candles.light3 = function(pos, node, puncher)
 	end
 	end
 
+local candle_sounds = nil
+if minetest.get_modpath("sounds") then
+	candle_sounds = sounds.node_metal({
+			dug = {name = "default_dig_crumbly", gain = 1.0}, 
+			dig = {name = "default_dig_crumbly", gain = 0.1},
+		})
+elseif minetest.get_modpath("default") then
+	candle_sounds = default.node_sound_metal_defaults({
+			dug = {name = "default_dig_crumbly", gain = 1.0}, 
+			dig = {name = "default_dig_crumbly", gain = 0.1},
+		})
+elseif minetest.get_modpath("hades_sounds") then
+	candle_sounds = hades_sounds.node_sound_metal_defaults({
+			dug = {name = "default_dig_crumbly", gain = 1.0}, 
+			dig = {name = "default_dig_crumbly", gain = 0.1},
+		})
+end
+
 church_candles.create_wall = function(ctype)
 	minetest.register_node(ctype.unlit, {
 		description = ctype.name,
@@ -270,11 +308,7 @@ church_candles.create_wall = function(ctype)
 		on_punch = church_candles.light1,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		node_box = {
 			type = "fixed",
@@ -327,11 +361,7 @@ church_candles.create_wall = function(ctype)
 		on_punch = church_candles.snuff1,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		drop = ctype.unlit,
 		node_box = {
@@ -375,11 +405,7 @@ church_candles.create_floor= function(ctype)
 		on_punch = church_candles.light1,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		node_box = {
 			type = "fixed",
@@ -425,11 +451,7 @@ church_candles.create_floor= function(ctype)
 		on_punch = church_candles.snuff1,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		drop = ctype.unlit,
 		node_box = {
@@ -472,11 +494,7 @@ church_candles.create_candelabra = function(ctype)
 		on_punch = church_candles.light3,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		node_box = {
 			type = "fixed",
@@ -530,11 +548,7 @@ church_candles.create_candelabra = function(ctype)
 		on_punch = church_candles.snuff3,
 		sunlight_propagates = true,
 		walkable = false,
-		sounds = default.node_sound_metal_defaults({
-			dug = {name = "default_dig_crumbly", gain = 1.0}, 
-			dig = {name = "default_dig_crumbly", gain = 0.1},
-			}
-		),
+		sounds = candle_sounds,
 		on_rotate = screwdriver.rotate_simple,
 		drop = ctype.unlit,
 		node_box = {
@@ -707,18 +721,20 @@ minetest.register_craftitem("church_candles:wax", {
 ------------------
 -- Craft Recipes
 ------------------
+--[[
 minetest.register_craft({
 	output = "church_candles:wax 2", --Palm Wax???   :)
 	recipe = {
-		{"default:jungleleaves", "default:jungleleaves", "default:jungleleaves"},
-		{"default:jungleleaves", "default:jungleleaves", "default:jungleleaves"},
-		{"default:jungleleaves", "default:jungleleaves", "default:jungleleaves"},
+		{items.jungle_leaves, items.jungle_leaves, items.jungle_leaves},
+		{items.jungle_leaves, items.jungle_leaves, items.jungle_leaves},
+		{items.jungle_leaves, items.jungle_leaves, items.jungle_leaves},
 	}
 })
+--]]
 
 minetest.register_craft({
 	output = "church_candles:candle",
 	recipe = {
-		{"church_candles:wax", "farming:cotton", "church_candles:wax"},
+		{"church_candles:wax", items.cotton, "church_candles:wax"},
 	}
 })
