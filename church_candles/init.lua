@@ -13,6 +13,8 @@ screwdriver = screwdriver or {}
 
 local church_candles = {}
 
+local torches = {["default:torch"]=true}
+
 local items = {
 		steel_ingot = "default:steel_ingot",
 		copper_ingot = "default:copper_ingot",
@@ -31,6 +33,11 @@ if minetest.get_modpath("hades_core") then
 	items.bronze_ingot = "hades_core:bronze_ingot"
 	items.jungle_leaves = "hades_trees:jungleleaves"
 	items.cotton = "hades_farming:cotton"
+
+	torches = {
+			["hades_torches:torch"]=true,
+			["hades_torches:torch_low"]=true
+		}
 end
 
 church_candles.types = {
@@ -175,7 +182,7 @@ church_candles.light1 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if wield and wield == "default:torch" then
+	if wield and torches[wield] then
 		local litname = church_candles.find_lit(node.name)
 		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -195,7 +202,7 @@ church_candles.light2 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if wield and wield == "default:torch" then
+	if wield and torches[wield] then
 		local litname = church_candles.find_lit(node.name)
 		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 		end
@@ -210,7 +217,7 @@ church_candles.light3 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if wield and wield == "default:torch" then
+	if wield and torches[wield] then
 		local litname = church_candles.find_lit(node.name)
 		minetest.add_node(pos,{name=litname, param1=node.param1, param2=node.param2})
 	local p1 = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -230,7 +237,7 @@ church_candles.light3 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if not wield or wield ~= "default:torch" then
+	if not wield or (not torches[wield]) then
 		local unlitname = church_candles.find_unlit(node.name)
 		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 
@@ -251,7 +258,7 @@ church_candles.light3 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if not wield or wield ~= "default:torch" then
+	if not wield or (not torches[wield]) then
 		local unlitname = church_candles.find_unlit(node.name)
 		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 		end
@@ -266,7 +273,7 @@ church_candles.light3 = function(pos, node, puncher)
 		return
 	end
 	wield = wield:get_name()
-	if not wield or wield ~= "default:torch" then
+	if not wield or (not torches[wield]) then
 		local unlitname = church_candles.find_unlit(node.name)
 		minetest.add_node(pos,{name=unlitname, param1=node.param1, param2=node.param2})
 

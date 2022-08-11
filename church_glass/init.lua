@@ -95,7 +95,7 @@ end
 if minetest.get_modpath("technic_worldgen") then
 	strips.lead = {
 			strip = S("Lead"),
-			hex	= "b6ac62",
+			hex	= "847c7a",
 			item = "technic:lead_lump"
 		}
 
