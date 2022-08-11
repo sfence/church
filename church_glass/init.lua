@@ -104,6 +104,18 @@ if minetest.get_modpath("technic_worldgen") then
 	end
 end
 
+if minetest.get_modpath("hades_technic_worldgen") then
+	strips.lead = {
+			strip = S("Lead"),
+			hex	= "847c7a",
+			item = "technic:lead_lump"
+		}
+
+	if minetest.get_modpath("basic_materials") then
+		strips.lead.item = "basic_materials:lead_strip"
+	end
+end
+
 local styles = {
 		-- 1
 		{
