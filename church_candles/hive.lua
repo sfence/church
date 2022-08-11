@@ -383,19 +383,46 @@ minetest.register_abm({
 	end,
 })
 
-minetest.register_abm({
-	nodenames = "default:apple",
-	neighbors = "default:leaves",
-	interval = 12,
-	chance = 601,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		local abv = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if not abv or abv.name ~= "default:leaves" then
-			return nil
+if not minetest.get_modpath("hades_core") then
+	minetest.register_abm({
+		nodenames = "default:apple",
+		neighbors = "default:leaves",
+		interval = 12,
+		chance = 601,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			local abv = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
+			if not abv or abv.name ~= "default:leaves" then
+				return nil
+			end
+			minetest.add_node(pos,{name="church_candles:hive_wild", param2 = 0})
 		end
-		minetest.add_node(pos,{name="church_candles:hive_wild", param2 = 0})
-	end
-})
+	})
+else
+	-- special callback version for Hades Revisited
+	minetest.register_abm({
+		nodenames = "group:fruit_regrow",
+		neighbors = "group:leaves",
+		interval = 12,
+		chance = 601,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			if minetest.get_item_group(node.name, "fruit_regrow")~=2 then
+				return nil
+			end
+			local abv = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
+			if not abv or minetest.get_item_group(abv.name, "leaves")==0 then
+				return nil
+			end
+			local objs = minetest.get_objects_inside_radius(pos, 10)
+			for _,obj in pairs(objs) do
+				local luaentity = object:get_luaentity()
+				if luaentity and (luaentity.name=="hades_animals:bee") then
+					minetest.add_node(pos,{name="church_candles:hive_wild", param2 = 0})
+					return nil
+				end
+			end
+		end
+	})
+end
 ----------------
 -- Craft Items
 ----------------
