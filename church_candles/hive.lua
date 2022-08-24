@@ -260,7 +260,7 @@ minetest.register_node("church_candles:busybees", {
 		clicker:set_hp(health - 1)
 	end,
 	on_construct = function(pos)
-	minetest.sound_play("church_candles_bee", {gain = 0.009, max_hear_distance = 1.0})
+		minetest.sound_play("church_candles_bee", {pos = pos, gain = 0.009, max_hear_distance = 1.0})
 	end,
 })
 --Honeycomb Block
@@ -353,7 +353,7 @@ minetest.register_abm({
 if minetest.get_timeofday() >= 0.25 and minetest.get_timeofday() < 0.75 then
 			if minetest.find_node_near(pos, 4, "church_candles:busybees") == nil then
 				minetest.set_node(pos, {name = "church_candles:busybees"})
-				minetest.sound_play("church_candles_bee", {gain = 0.1, max_hear_distance = 1.0})
+				minetest.sound_play("church_candles_bee", {pos = pos, gain = 0.1, max_hear_distance = 1.0})
 			end
 		end
 	end,
@@ -368,7 +368,7 @@ minetest.register_abm({
 if minetest.get_timeofday() >= 0.25 and minetest.get_timeofday() < 0.75 then
 			if minetest.find_node_near(pos, 4, "church_candles:busybees") == nil then
 				minetest.set_node(pos, {name = "church_candles:busybees"})
-				minetest.sound_play("church_candles_bee", {gain = 0.1, max_hear_distance = 1.0})
+				minetest.sound_play("church_candles_bee", {pos = pos, gain = 0.1, max_hear_distance = 1.0})
 			end
 		end
 	end,
