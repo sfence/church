@@ -6,6 +6,7 @@ CRAFTING:
 hive_wild:
 	naturally occurring in apple trees, remove the leaves above the
 	 hive to make it drop
+  spawn chance can be set in setting by parameters `church_candles_wild_hive_spawn_interval` and `church_candles_wild_hive_spawn_chance`
 
 bee hive:
 	wood	wood		wood
