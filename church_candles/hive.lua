@@ -398,7 +398,7 @@ if not minetest.get_modpath("hades_core") then
         if not abv or abv.name ~= "default:leaves" then
           return nil
         end
-        if minetest.find_node_near(pos, 10, {"church_candles:hive_wild","church_candles:busybees"}) == nil then
+        if minetest.find_node_near(pos, 10, {"church_candles:hive_wild","church_candles:busybees"}) ~= nil then
           return nil
         end
         minetest.add_node(pos,{name="church_candles:hive_wild", param2 = 0})
