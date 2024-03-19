@@ -149,13 +149,13 @@ minetest.register_node('church_grave:grave_simple', {
 local items = {
 		stone = "default:stone",
 		stone_slab = "stairs:slab_stone",
-		stone_wall = "walls:stone",
+		stone_wall = "moreblocks:panel_stone",
 	}
 
 if minetest.get_modpath("hades_core") then
 	items.stone = "hades_core:stone"
 	items.stone_slab = "hades_stairs:slab_stone"
-	items.stone_wall = "hades_walls:stone"
+	items.stone_wall = "moreblocks:panel_stone"
 end
 
 minetest.register_craft({
@@ -169,7 +169,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'church_grave:grave_fancy',
 	recipe = {
-		{ 'church_cross:stone'},
+		{ 'church_cross:cross_stone'},
 		{ items.stone_slab},
 	}
 })
@@ -177,7 +177,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'church_grave:grave_simple',
 	recipe = {
-		{ 'church_cross:stone'},
+		{ 'church_cross:cross_stone'},
 		{ items.stone_wall},
 	}
 })
